@@ -37,6 +37,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <sstream>
 #include <list>
 
 #include "vector.h"
@@ -298,7 +299,48 @@ long combinations(int n,int k)
     return(combinations);
 }
 
+/* **************************************************************************************
+ * Routine that returns a string that will represent the source and terminal compartment
+ * for a given flow. If no source is found the source is represented by "*," and if no
+ * terminus is found the terminus is represented by "*." The source and terminus is found
+ * by looking at the column associated with a given flow using the stoichiometry matrix.
+ * ************************************************************************************** */
+std::string representFlow(int flow,Matrix<double>stoichiometry)
+{
+    std::string source   = " *";   // Assume the source has no compartment it comes out of
+    std::string terminus = " *";   // Assume the terminus has no compartment it flows into
+    int lupe;
+    std::stringstream convertSource;
+    std::stringstream convertTerminus;
 
+    if((flow<0)||(flow>stoichiometry.getNumberColumns()))
+    {
+        // This is an error. This flow is not defined in the stoichiometry matrix.
+        return("ERROR");
+    }
+
+    // Go through all the rows in the stoichiometry matrix coresponding to the given column.
+    for(lupe=0;lupe<stoichiometry.getNumberRows();++lupe)
+    {
+        if(stoichiometry[lupe][flow]>0.1)
+        {
+            // This is an inflow node. The given flow goes into this compartment.
+            convertTerminus << std::setw(2) << lupe+1;
+            terminus = convertTerminus.str();
+            convertTerminus.clear();
+        }
+        else if(stoichiometry[lupe][flow]<-0.1)
+        {
+            // This is an outflow node. The given flow comes out of this compartment.
+            convertSource << std::setw(2) << lupe+1;
+            source = convertSource.str();
+            convertSource.clear();
+        }
+    }
+
+    // Send out the string that has the source and terminus in a nice format.
+    return(source+"->"+terminus);
+}
 
 int main(int argc,char **argv)
 {
@@ -327,9 +369,9 @@ int main(int argc,char **argv)
     int numberRepeats = 0;    // Number of times vectors were tested that have already been in a feasible test.
 
 
-//#ifdef DEBUG
+#ifdef DEBUG
     stoichiometry.printArray();
-//#endif
+#endif
     stoichiometry.printKnownAndUnknowableFlows();
     stoichiometry.RREF();
 #ifdef DEBUG
@@ -345,11 +387,12 @@ int main(int argc,char **argv)
     std::cout << "Number Feasible: " << numberFeasible << std::endl
               << "Normalization: "   << numberPossible << std::endl
               << "Feasible by column: " << std::endl
-              << "Flow Feasible     Sum Cond.   Sum Inv Cond         Impact" << std::endl;
+              << "Number  Flow  Feasible  Sum Cond.    Sum Inv Cond      Impact" << std::endl;
     for(int lupe=0;lupe<feasibleByColumn.getLength();++lupe)
     {
         std::cout << std::fixed
-                  << std::setw(4) << lupe+1 << "    "
+                  << std::setw(3) << lupe+1 << "    "
+                  << representFlow(lupe,originalStoich)
                   << std::setw(5) << feasibleByColumn[lupe] << "   "
                   << std::setw(11) << std::setprecision(5) << sumConditionNumbers[lupe] << "    "
                   << std::setw(11) << std::setprecision(5) << sumInvConditionNumbers[lupe] << "    ";
