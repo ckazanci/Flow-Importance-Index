@@ -667,13 +667,13 @@ public:
         // Print out the top row that has column numbers
         for(innerLupe=0;innerLupe<getNumberColumns();++innerLupe)
         {
-            std::cout <<  "(" << std::setw(2) << innerLupe << ") ";
+            std::cout <<  "(" << std::setw(2) << innerLupe+1 << ") ";
         }
         std::cout << std::endl;
 
         for (outerLupe=0;outerLupe<getNumberRows();++outerLupe)
         {
-            std::cout << std::endl << "(" << outerLupe << ") " ;
+            std::cout << std::endl << "(" << outerLupe+1 << ") " ;
             for(innerLupe=0;innerLupe<getNumberColumns();++innerLupe)
             {
                 std::cout <<  std::setw(4) << u[outerLupe][innerLupe]  << " ";

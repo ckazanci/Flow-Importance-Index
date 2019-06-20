@@ -71,8 +71,10 @@ bool columnsConsidered(Matrix<double> *rref,
 
     bool considered = false;
 
-    //std::cout << "checking: " << (*indicies)[currentRow] << "/" << currentRow << "/" << currentColumn << " " << std::endl;
-    //printVector(*indicies);
+#ifdef DEBUG
+    std::cout << "checking: " << (*indicies)[currentRow] << "/" << currentRow << "/" << currentColumn << " " << std::endl;
+    printVector(*indicies);
+#endif
     for(int prevColumn=0;!considered && (prevColumn<currentRow);++prevColumn)
     {
         if((*indicies)[prevColumn]>(*indicies)[currentRow])
@@ -167,7 +169,9 @@ bool testFullColumnSet(Matrix<double> *originalStoichiometry,
         double inverseNorm = testBasis->dgecon(false);
         double conditionNumber  = matrixNorm*inverseNorm;
         conditionNumbers->push_back(conditionNumber);
-        //std::cout << *numberFeasible << " " << matrixNorm << "/" << inverseNorm << std::endl;
+#ifdef DEBUG
+        std::cout << *numberFeasible << " " << matrixNorm << "/" << inverseNorm << std::endl;
+#endif
 
         //else
         {
@@ -323,9 +327,13 @@ int main(int argc,char **argv)
     int numberRepeats = 0;    // Number of times vectors were tested that have already been in a feasible test.
 
 
+#ifdef DEBUG
     stoichiometry.printArray();
+#endif
     stoichiometry.RREF();
-    //stoichiometry.printArray();
+#ifdef DEBUG
+    stoichiometry.printArray();
+#endif
     checkColumns(&stoichiometry,&originalStoich,&testBasis,&indicies,
                  &numberFeasible,0,&numberRepeats,
                  &feasibleByColumn,&conditionNumbers,
@@ -340,7 +348,7 @@ int main(int argc,char **argv)
     for(int lupe=0;lupe<feasibleByColumn.getLength();++lupe)
     {
         std::cout << std::fixed
-                  << std::setw(4) << lupe << "    "
+                  << std::setw(4) << lupe+1 << "    "
                   << std::setw(5) << feasibleByColumn[lupe] << "   "
                   << std::setw(11) << std::setprecision(5) << sumConditionNumbers[lupe] << "    "
                   << std::setw(11) << std::setprecision(5) << sumInvConditionNumbers[lupe] << "    ";
