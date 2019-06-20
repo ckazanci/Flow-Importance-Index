@@ -327,9 +327,10 @@ int main(int argc,char **argv)
     int numberRepeats = 0;    // Number of times vectors were tested that have already been in a feasible test.
 
 
-#ifdef DEBUG
+//#ifdef DEBUG
     stoichiometry.printArray();
-#endif
+//#endif
+    stoichiometry.printKnownAndUnknowableFlows();
     stoichiometry.RREF();
 #ifdef DEBUG
     stoichiometry.printArray();
@@ -344,7 +345,7 @@ int main(int argc,char **argv)
     std::cout << "Number Feasible: " << numberFeasible << std::endl
               << "Normalization: "   << numberPossible << std::endl
               << "Feasible by column: " << std::endl
-              << "Node Feasible     Sum Cond.   Sum Inv Cond         Impact" << std::endl;
+              << "Flow Feasible     Sum Cond.   Sum Inv Cond         Impact" << std::endl;
     for(int lupe=0;lupe<feasibleByColumn.getLength();++lupe)
     {
         std::cout << std::fixed

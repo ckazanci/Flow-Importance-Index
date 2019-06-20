@@ -681,6 +681,14 @@ public:
         }
         std::cout << std::endl;
 
+        printKnownAndUnknowableFlows();
+
+    }
+
+    // function to print out the list of known and unkowable flows.
+    void printKnownAndUnknowableFlows()
+    {
+
         if(unknowableColumns.length()>0)
         {
             std::cout << "Unknowable: ";
