@@ -150,7 +150,7 @@ std::ostream& operator<<(std::ostream& os, FoundFeasible& v)
 bool FoundFeasible::match(Vector<int> *indicies)
 {
     // See if the two lists have the same length.
-    bool found = (std::size_t)indicies->getLength() == columns.size();
+    bool found = static_cast<std::size_t>(indicies->getLength()) == columns.size();
 
     std::list<int>::iterator listValues;
     for(int columnLupe = 0;found && (columnLupe<indicies->getLength());++columnLupe)
@@ -172,7 +172,7 @@ bool FoundFeasible::match(Vector<int> *indicies)
 // returns the number of column sets being tracked.
 int FoundFeasible::length()
 {
-    return((int)columns.size());
+    return(static_cast<int>(columns.size()));
 }
 
 std::list<int>::iterator FoundFeasible::begin(){return(columns.begin());}

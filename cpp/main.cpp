@@ -80,13 +80,13 @@ bool columnsConsidered(Matrix<double> *rref,
             // This column may have been considered in a previous iteration.
             for(int rowCheck=0;!considered && (rowCheck<indicies->getLength());++rowCheck)
             {
-                /*
+#ifdef DEBUG
                 std::cout << std::setw(5) << (*rref)[rowCheck][(*indicies)[rowCheck]]
                           << std::setw(5) << (*rref)[currentRow][(*indicies)[rowCheck]]
                           << std::setw(5) << (*rref)[rowCheck][currentColumn]
                           << std::setw(5) << (*rref)[currentRow][currentColumn]
                                << std::endl;
-                */
+#endif
                 if(rowCheck!=prevColumn)
                      considered = considered ||
                              (fabs((*rref)[prevColumn][(*indicies)[prevColumn]] *
@@ -289,7 +289,7 @@ long combinations(int n,int k)
     long combinations = 1;
     long lupe;
     long denominator = 1;
-    for(lupe=(long)n;lupe>(long)(n-k);--lupe)
+    for(lupe=static_cast<long>(n);lupe>static_cast<long>(n-k);--lupe)
         combinations = combinations*lupe/(denominator++);
     return(combinations);
 }
@@ -347,7 +347,8 @@ int main(int argc,char **argv)
         if(feasibleByColumn[lupe]>0)
         {
             // This flow appears in at least one valid representation.
-            std::cout << std::setw(11) << std::setprecision(5) << sumInvConditionNumbers[lupe]*sumConditionNumbers[lupe]/(((double)feasibleByColumn[lupe])*((double)numberFeasible));
+            std::cout << std::setw(11) << std::setprecision(5)
+                      << sumInvConditionNumbers[lupe]*sumConditionNumbers[lupe]/(static_cast<double>(feasibleByColumn[lupe])*static_cast<double>(numberFeasible));
         }
         else
         {

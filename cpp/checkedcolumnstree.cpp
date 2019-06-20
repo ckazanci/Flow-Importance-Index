@@ -48,7 +48,7 @@ CheckedColumnsTree::CheckedColumnsTree()
 {
     setWidth(0);
     setDepth(0);
-    checked = NULL;
+    checked = nullptr;
 }
 
 // Constructor when the max width and depth are known.
@@ -63,7 +63,7 @@ CheckedColumnsTree::CheckedColumnsTree(int width,int depth)
     for(int lupe=0;lupe<width;++lupe)
     {
         checked[lupe].value = false;
-        checked[lupe].nextColumn = NULL;
+        checked[lupe].nextColumn = nullptr;
     }
 }
 
@@ -86,14 +86,14 @@ bool CheckedColumnsTree::checkColumn(FoundFeasible *indicies)
         // for each item in indicies see if the level in the tree exists.
         // Note that we know the full depth of the tree in advance which allows
         // to use prev. for loop.
-        if(current[indicies->currentValue()].nextColumn==NULL)
+        if(current[indicies->currentValue()].nextColumn==nullptr)
         {
             // This branch of the tree does not exist.
             // Create a new branch and add it to the tree.
             ColumnTree *newBranch = new ColumnTree[width];
             for(int lupe=0;lupe<width;++lupe)
             {
-                newBranch[lupe].nextColumn = NULL;
+                newBranch[lupe].nextColumn = nullptr;
                 newBranch[lupe].value = false;
             }
             current[indicies->currentValue()].nextColumn = newBranch;

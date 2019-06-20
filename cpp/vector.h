@@ -124,10 +124,10 @@ public:
     // Default constructor
     Matrix()
     {
-        u = NULL;
+        u = nullptr;
         rows = -1;
         columns = -1;
-        index = NULL;
+        index = nullptr;
     }
 
     // Constructor that takes the number rows, columns, and initial value.
@@ -749,7 +749,7 @@ public:
 
 
 protected:
-    field **u = NULL;  // the matrix itslef.
+    field **u = nullptr;  // the matrix itslef.
     int rows = -1;     // number of rows in the matrix
     int columns = -1;  // number of columns in the matrix
     int* index;        // variable used to hold the current row permutations.
@@ -766,8 +766,8 @@ class SquareMatrix : public Matrix<field>
 public:
     SquareMatrix() : Matrix<field>()
     {
-        work = NULL;
-        iwork = NULL;
+        work  = nullptr;
+        iwork = nullptr;
     }
 
     SquareMatrix(int numberRows,field initialValue=0) : Matrix<field>(numberRows,numberRows,initialValue)
@@ -784,9 +784,9 @@ public:
     ~SquareMatrix()
     {
         // clean up the mess.
-        if(work!=NULL)
+        if(work!=nullptr)
             delete [] work;
-        if(iwork!=NULL)
+        if(iwork!=nullptr)
             delete [] iwork;
     }
 
