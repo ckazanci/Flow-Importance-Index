@@ -384,10 +384,13 @@ int main(int argc,char **argv)
                  previouslyChecked);
 
     long numberPossible = combinations(stoichiometry.getNumberColumns()-1,stoichiometry.getNumberRows());
-    std::cout << "Number Feasible: " << numberFeasible << std::endl
-              << "Normalization: "   << numberPossible << std::endl
-              << "Feasible by column: " << std::endl
-              << "Number  Flow  Feasible  Sum Cond.    Sum Inv Cond      Impact" << std::endl;
+    std::cout
+#ifdef FULLPRINTOUT
+            << "Number Feasible: " << numberFeasible << std::endl
+            << "Normalization: "   << numberPossible << std::endl
+            << "Feasible by column: " << std::endl
+#endif
+            << "Number  Flow  Feasible  Sum Cond.    Sum Inv Cond      Impact" << std::endl;
     for(int lupe=0;lupe<feasibleByColumn.getLength();++lupe)
     {
         std::cout << std::fixed
@@ -405,7 +408,7 @@ int main(int argc,char **argv)
         else
         {
             // This flow does not appear in any valid representations.
-            std::cout << "         NA";
+            std::cout << "         NA (unknowable)";
         }
         std::cout<< std::endl;
     }
