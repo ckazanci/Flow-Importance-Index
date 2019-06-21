@@ -63,10 +63,10 @@ void FoundFeasible::printList()
 {
     std::list<int>::iterator listValues = columns.begin();
     if(listValues!=columns.end())
-        std::cout << *listValues++;
+        std::cout << (*listValues++)+1;
     for(;listValues!=columns.end();++listValues)
     {
-        std::cout  << "-" << *listValues;
+        std::cout  << "-" << (*listValues)+1;
     }
     std::cout << std::endl;
 }

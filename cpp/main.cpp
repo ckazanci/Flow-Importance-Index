@@ -308,7 +308,7 @@ long combinations(int n,int k)
 std::string representFlow(int flow,Matrix<double>stoichiometry)
 {
     std::string source   = " *";   // Assume the source has no compartment it comes out of
-    std::string terminus = " *";   // Assume the terminus has no compartment it flows into
+    std::string terminus = "* ";   // Assume the terminus has no compartment it flows into
     int lupe;
     std::stringstream convertSource;
     std::stringstream convertTerminus;
@@ -325,14 +325,14 @@ std::string representFlow(int flow,Matrix<double>stoichiometry)
         if(stoichiometry[lupe][flow]>0.1)
         {
             // This is an inflow node. The given flow goes into this compartment.
-            convertTerminus << std::setw(2) << lupe+1;
+            convertTerminus << std::setw(2) << std::left << lupe+1;
             terminus = convertTerminus.str();
             convertTerminus.clear();
         }
         else if(stoichiometry[lupe][flow]<-0.1)
         {
             // This is an outflow node. The given flow comes out of this compartment.
-            convertSource << std::setw(2) << lupe+1;
+            convertSource << std::setw(2) << std::right << lupe+1;
             source = convertSource.str();
             convertSource.clear();
         }
@@ -383,27 +383,36 @@ int main(int argc,char **argv)
                  &sumConditionNumbers,&sumInvConditionNumbers,
                  previouslyChecked);
 
-    long numberPossible = combinations(stoichiometry.getNumberColumns()-1,stoichiometry.getNumberRows());
+//#define FULLPRINTOUT
     std::cout
 #ifdef FULLPRINTOUT
             << "Number Feasible: " << numberFeasible << std::endl
-            << "Normalization: "   << numberPossible << std::endl
+            << "Normalization: "   << combinations(stoichiometry.getNumberColumns()-1,stoichiometry.getNumberRows()) << std::endl
             << "Feasible by column: " << std::endl
 #endif
-            << "Number  Flow  Feasible  Sum Cond.    Sum Inv Cond      Impact" << std::endl;
+            << "Number  Flow  "
+#ifdef FULLPRINTOUT
+            << "Feasible  Sum Cond.    Sum Inv Cond   "
+#endif
+            << "   Impact" << std::endl;
     for(int lupe=0;lupe<feasibleByColumn.getLength();++lupe)
     {
         std::cout << std::fixed
                   << std::setw(3) << lupe+1 << "    "
                   << representFlow(lupe,originalStoich)
+#ifdef FULLPRINTOUT
                   << std::setw(5) << feasibleByColumn[lupe] << "   "
                   << std::setw(11) << std::setprecision(5) << sumConditionNumbers[lupe] << "    "
-                  << std::setw(11) << std::setprecision(5) << sumInvConditionNumbers[lupe] << "    ";
+                  << std::setw(11) << std::setprecision(5) << sumInvConditionNumbers[lupe] << "    "
+#endif
+                  ;
         if(feasibleByColumn[lupe]>0)
         {
             // This flow appears in at least one valid representation.
             std::cout << std::setw(11) << std::setprecision(5)
                       << sumInvConditionNumbers[lupe]*sumConditionNumbers[lupe]/(static_cast<double>(feasibleByColumn[lupe])*static_cast<double>(numberFeasible));
+            if(originalStoich.columnEntryInKnown(lupe))
+                std::cout << " (known)";
         }
         else
         {

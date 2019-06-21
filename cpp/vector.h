@@ -329,14 +329,14 @@ public:
             // There is another delimiter. Parse the next number.
             if(pos-currentComma>0)
             {
-                unknowableColumns.addColumn(std::stod(unknowable.substr(currentComma,pos-currentComma)));
+                unknowableColumns.addColumn(std::stod(unknowable.substr(currentComma,pos-currentComma))-1);
             }
             currentComma = pos+1;                          // update where to start the next search for a comma.
             pos = unknowable.find(delimiter,currentComma); // Figure out where the comma is.
         }
 
         // Add the last number in the list to the matrix.
-        unknowableColumns.addColumn(std::stod(unknowable.substr(currentComma)));
+        unknowableColumns.addColumn(std::stod(unknowable.substr(currentComma))-1);
     }
 
     void addKnownColumns(std::string known,const std::string delimiter)
@@ -348,14 +348,14 @@ public:
             // There is another delimiter. Parse the next number.
             if(pos-currentComma>0)
             {
-                knownColumns.addColumn(std::stod(known.substr(currentComma,pos-currentComma)));
+                knownColumns.addColumn(std::stod(known.substr(currentComma,pos-currentComma))-1);
             }
             currentComma = pos+1;                     // update where to start the next search for a comma.
             pos = known.find(delimiter,currentComma); // Figure out where the comma is.
         }
 
         // Add the last number in the list to the matrix.
-        knownColumns.addColumn(std::stod(known.substr(currentComma)));
+        knownColumns.addColumn(std::stod(known.substr(currentComma))-1);
     }
 
     // Method to check to see if any of the entries in the list of unknowables
@@ -685,7 +685,7 @@ public:
 
     }
 
-    // function to print out the list of known and unkowable flows.
+    // function to print out the list of known and unknowable flows.
     void printKnownAndUnknowableFlows()
     {
 
